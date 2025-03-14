@@ -24,7 +24,7 @@ function Home() {
         <div className="portfolio-intro">
           <h1>{portfolio.name}</h1>
           <a 
-            href="https://github.com/yourusername" 
+            href="https://github.com/limch2320" 
             target="_blank" 
             rel="noopener noreferrer"
             className="github-link"
