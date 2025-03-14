@@ -6,12 +6,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:3000"    # 호스트의 80포트를 컨테이너의 3000포트로 매핑
+      - "80:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
       - REACT_APP_API_URL=http://backend:5000
+      - NODE_ENV=development
     depends_on:
       - backend
 
