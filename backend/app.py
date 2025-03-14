@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='build')
 CORS(app)  # React에서의 API 요청을 허용
 
 # 포트폴리오 데이터 (정적 데이터)
@@ -35,6 +36,13 @@ def add_guestbook_entry():
         return jsonify({"error": "Invalid entry data"}), 400
     guestbook_entries.append(entry)
     return jsonify({"message": "Entry added", "entry": entry}), 201
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
