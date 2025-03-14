@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaGithub } from "react-icons/fa";
+import { ReactComponent as GithubIcon } from '../icons/github.svg';
 
 function Home() {
   const [portfolio, setPortfolio] = useState(null);
@@ -24,12 +24,12 @@ function Home() {
         <div className="portfolio-intro">
           <h1>{portfolio.name}</h1>
           <a 
-            href="https://github.com/limch2320" 
+            href="https://github.com/yourusername" 
             target="_blank" 
             rel="noopener noreferrer"
             className="github-link"
           >
-            <FaGithub /> GitHub
+            <GithubIcon className="github-icon" /> GitHub
           </a>
           <p>{portfolio.bio}</p>
         </div>
