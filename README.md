@@ -4,7 +4,8 @@ React와 Flask를 이용한 프로젝트
 ## 백엔드 실행 방법
 ```bash
 cd backend
-.\venv\Scripts\Activate.ps1   # 가상환경 활성화
+python -m venv venv
+venv\Scripts\activate   # 가상환경 활성화
 pip install -r requirements.txt  # 패키지 설치
 python app.py  # Flask 서버 실행
 ```
