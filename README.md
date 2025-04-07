@@ -22,4 +22,4 @@ npm start  # React 실행
 docker-compose up --build
 ```
 
-이후 localhost 접속
+### 이후 localhost 접속
