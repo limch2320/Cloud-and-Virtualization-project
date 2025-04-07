@@ -6,7 +6,7 @@ function Guestbook() {
   const [message, setMessage] = useState("");
 
   const fetchEntries = () => {
-    fetch("http://127.0.0.1:5000/guestbook")
+    fetch("http://127.0.0.1:8080/guestbook")
       .then(res => res.json())
       .then(data => setEntries(data.entries))
       .catch(err => console.error("Error fetching guestbook:", err));
@@ -19,7 +19,7 @@ function Guestbook() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newEntry = { name, message };
-    fetch("http://127.0.0.1:5000/guestbook", {
+    fetch("http://127.0.0.1:8080/guestbook", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEntry)
