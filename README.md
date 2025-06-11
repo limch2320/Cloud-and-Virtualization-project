@@ -117,9 +117,3 @@ Cloud-and-Virtualization-project/
 ├── docker-compose.yml        # Docker Compose 설정
 └── README.md                # 프로젝트 문서
 ```
-
-## ⚙️ 개발 정보
-- **작성자**: 임창훈
-- **학과**: 조선대학교 정보보호학과
-- **연구분야**: 인공지능 보안, 분산 ID
-- **프로젝트 기간**: 2025년 4월 ~ 6월
