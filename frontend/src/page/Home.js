@@ -11,7 +11,29 @@ function Home() {
       .catch(err => console.error("Error fetching portfolio:", err));
   }, []);
 
-  if (!portfolio) return <div>Loading portfolio...</div>;
+  if (!portfolio) return (
+    <div className="container">
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '60vh',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          width: '60px',
+          height: '60px',
+          border: '4px solid rgba(102, 126, 234, 0.2)',
+          borderTop: '4px solid #667eea',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          marginBottom: '1rem'
+        }}></div>
+        <p style={{ color: '#4a5568', fontSize: '1.1rem' }}>포트폴리오를 불러오는 중...</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container">
