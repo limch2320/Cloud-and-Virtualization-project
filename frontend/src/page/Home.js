@@ -4,8 +4,10 @@ import { ReactComponent as GithubIcon } from '../icons/github.svg';
 function Home() {
   const [portfolio, setPortfolio] = useState(null);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
+
   useEffect(() => {
-    fetch("http://127.0.0.1:8080/portfolio")
+    fetch(`${API_URL}/portfolio`)
       .then(res => res.json())
       .then(data => setPortfolio(data))
       .catch(err => console.error("Error fetching portfolio:", err));

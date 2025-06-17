@@ -9,6 +9,8 @@ function Admin() {
   const [allEntries, setAllEntries] = useState([]);
   const [showAllEntries, setShowAllEntries] = useState(false);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
+
   useEffect(() => {
     checkAdminStatus();
   }, []);
@@ -21,7 +23,7 @@ function Admin() {
 
   const checkAdminStatus = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/admin/status', {
+      const response = await fetch(`${API_URL}/admin/status`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -33,10 +35,9 @@ function Admin() {
       setLoading(false);
     }
   };
-
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/admin/guestbook/stats', {
+      const response = await fetch(`${API_URL}/admin/guestbook/stats`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -47,10 +48,9 @@ function Admin() {
       console.error('Error fetching stats:', error);
     }
   };
-
   const fetchAllEntries = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/admin/guestbook', {
+      const response = await fetch(`${API_URL}/admin/guestbook`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -69,7 +69,7 @@ function Admin() {
     }
     
     try {
-      const response = await fetch(`http://127.0.0.1:8080/guestbook/${entryId}`, {
+      const response = await fetch(`${API_URL}/guestbook/${entryId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -98,7 +98,7 @@ function Admin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:8080/admin/login', {
+      const response = await fetch(`${API_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ function Admin() {
 
   const handleLogout = async () => {
     try {
-      await fetch('http://127.0.0.1:8080/admin/logout', {
+      await fetch(`${API_URL}/admin/logout`, {
         method: 'POST',
         credentials: 'include'
       });
