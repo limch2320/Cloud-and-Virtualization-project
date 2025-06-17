@@ -8,25 +8,31 @@ function Guestbook() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
+
   const fetchEntries = (page = 1) => {
-    fetch(`http://127.0.0.1:8080/guestbook?page=${page}&per_page=5`)
+    fetch(`${API_URL}/guestbook?page=${page}&per_page=5`)
       .then(res => res.json())
       .then(data => {
-        setEntries(data.entries);
-        setPagination(data.pagination);
+        setEntries(data.entries || []);
+        setPagination(data.pagination || {});
       })
-      .catch(err => console.error("Error fetching guestbook:", err));
+      .catch(err => {
+        console.error("Error fetching guestbook:", err);
+        setEntries([]);
+        setPagination({});
+      });
   };
-
   const checkAdminStatus = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/admin/status', {
+      const response = await fetch(`${API_URL}/admin/status`, {
         credentials: 'include'
       });
       const data = await response.json();
       setIsAdmin(data.is_admin);
     } catch (error) {
       console.error('Error checking admin status:', error);
+      setIsAdmin(false);
     }
   };
 
@@ -40,9 +46,8 @@ function Guestbook() {
       alert("이름과 메시지를 모두 입력해주세요.");
       return;
     }
-    
-    const newEntry = { name: name.trim(), message: message.trim() };
-    fetch("http://127.0.0.1:8080/guestbook", {
+      const newEntry = { name: name.trim(), message: message.trim() };
+    fetch(`${API_URL}/guestbook`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEntry)
@@ -70,8 +75,7 @@ function Guestbook() {
     if (!window.confirm("정말로 이 메시지를 삭제하시겠습니까?")) {
       return;
     }
-    
-    fetch(`http://127.0.0.1:8080/guestbook/${entryId}`, {
+      fetch(`${API_URL}/guestbook/${entryId}`, {
       method: "DELETE",
       credentials: 'include'
     })
@@ -117,7 +121,7 @@ function Guestbook() {
         />
         <button type="submit">작성하기</button>
       </form>      <h2>방명록 목록</h2>
-      {entries.length === 0 ? (
+      {(!entries || entries.length === 0) ? (
         <div className="guestbook-container">
           <p style={{ textAlign: 'center', color: '#6c757d', fontSize: '1.1rem' }}>
             등록된 메시지가 없습니다. 첫 번째 메시지를 남겨보세요! 
@@ -134,7 +138,7 @@ function Guestbook() {
             color: '#4a5568',
             fontWeight: '600'
           }}>
-            총 {pagination.total}개의 메시지 (페이지 {pagination.page}/{pagination.pages})
+            총 {pagination.total || 0}개의 메시지 (페이지 {pagination.page || 1}/{pagination.pages || 1})
           </div>
           <div>
             {entries.map((entry) => (
@@ -166,9 +170,8 @@ function Guestbook() {
               className="pagination-btn"
             >
               이전
-            </button>
-            <div className="pagination-info">
-              {pagination.page} / {pagination.pages}
+            </button>            <div className="pagination-info">
+              {pagination.page || 1} / {pagination.pages || 1}
             </div>
             <button 
               onClick={() => setCurrentPage(currentPage + 1)}
