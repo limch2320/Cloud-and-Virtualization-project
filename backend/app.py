@@ -288,4 +288,8 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     
-    app.run(debug=True, host="0.0.0.0", port=8080)
+    app.run(debug=True, host="0.0.0.0", port=5000)
+
+# Docker에서 실행될 때를 위한 데이터베이스 초기화
+with app.app_context():
+    db.create_all()
