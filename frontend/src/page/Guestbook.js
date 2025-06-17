@@ -34,37 +34,59 @@ function Guestbook() {
       console.error('Error checking admin status:', error);
       setIsAdmin(false);
     }
-  };
-
-  useEffect(() => {
+  };  useEffect(() => {
     fetchEntries(currentPage);
     checkAdminStatus();
-  }, [currentPage]);
-  const handleSubmit = (e) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submitted!"); // 디버깅용 로그
+    
     if (!name.trim() || !message.trim()) {
       alert("이름과 메시지를 모두 입력해주세요.");
       return;
     }
-      const newEntry = { name: name.trim(), message: message.trim() };
-    fetch(`${API_URL}/guestbook`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEntry)
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          alert(`오류: ${data.error}`);
-        } else {
-          console.log("Entry added:", data);
-          setName("");
-          setMessage("");
-          setCurrentPage(1); // 첫 페이지로 이동
-          fetchEntries(1); // 새 데이터로 갱신
-        }
-      })
-      .catch(err => console.error("Error adding entry:", err));
+    
+    const newEntry = { name: name.trim(), message: message.trim() };
+    console.log("Sending entry:", newEntry); // 디버깅용 로그
+    console.log("API URL:", API_URL); // 디버깅용 로그
+    
+    try {
+      const response = await fetch(`${API_URL}/guestbook`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(newEntry),
+        mode: 'cors'
+      });
+      
+      console.log("Response status:", response.status); // 디버깅용 로그
+      console.log("Response ok:", response.ok); // 디버깅용 로그
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log("Response data:", data); // 디버깅용 로그
+      
+      if (data.error) {
+        alert(`오류: ${data.error}`);
+      } else {
+        console.log("Entry added:", data);
+        setName("");
+        setMessage("");
+        setCurrentPage(1); // 첫 페이지로 이동
+        fetchEntries(1); // 새 데이터로 갱신
+        alert("메시지가 성공적으로 추가되었습니다!");
+      }
+    } catch (err) {
+      console.error("Detailed error:", err);
+      console.error("Error message:", err.message);
+      alert(`네트워크 오류가 발생했습니다: ${err.message}`);
+    }
   };
   const handleDelete = (entryId) => {
     if (!isAdmin) {
