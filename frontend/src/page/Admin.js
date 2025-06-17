@@ -9,7 +9,7 @@ function Admin() {
   const [allEntries, setAllEntries] = useState([]);
   const [showAllEntries, setShowAllEntries] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
+  const API_URL = process.env.REACT_APP_API_URL || '';
 
   useEffect(() => {
     checkAdminStatus();

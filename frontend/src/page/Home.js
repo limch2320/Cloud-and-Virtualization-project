@@ -4,13 +4,25 @@ import { ReactComponent as GithubIcon } from '../icons/github.svg';
 function Home() {
   const [portfolio, setPortfolio] = useState(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
-
+  const API_URL = process.env.REACT_APP_API_URL || '';
   useEffect(() => {
+    console.log('API_URL:', API_URL);
+    console.log('Fetching portfolio from:', `${API_URL}/portfolio`);
+    
     fetch(`${API_URL}/portfolio`)
-      .then(res => res.json())
-      .then(data => setPortfolio(data))
-      .catch(err => console.error("Error fetching portfolio:", err));
+      .then(res => {
+        console.log('Portfolio response status:', res.status);
+        console.log('Portfolio response ok:', res.ok);
+        return res.json();
+      })
+      .then(data => {
+        console.log('Portfolio data received:', data);
+        setPortfolio(data);
+      })
+      .catch(err => {
+        console.error("Error fetching portfolio:", err);
+        console.error("Error details:", err.message);
+      });
   }, []);
 
   if (!portfolio) return (

@@ -8,7 +8,7 @@ function Guestbook() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080';
+  const API_URL = process.env.REACT_APP_API_URL || '';
 
   const fetchEntries = (page = 1) => {
     fetch(`${API_URL}/guestbook?page=${page}&per_page=5`)
@@ -22,19 +22,29 @@ function Guestbook() {
         setEntries([]);
         setPagination({});
       });
-  };
-  const checkAdminStatus = async () => {
+  };  const checkAdminStatus = async () => {
     try {
+      console.log('Checking admin status at:', `${API_URL}/admin/status`);
       const response = await fetch(`${API_URL}/admin/status`, {
-        credentials: 'include'
+        credentials: 'include',
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('Admin status response:', data);
       setIsAdmin(data.is_admin);
     } catch (error) {
       console.error('Error checking admin status:', error);
       setIsAdmin(false);
     }
-  };  useEffect(() => {
+  };useEffect(() => {
     fetchEntries(currentPage);
     checkAdminStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps

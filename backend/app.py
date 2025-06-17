@@ -8,7 +8,7 @@ import secrets
 app = Flask(__name__, static_folder='build')
 CORS(app, 
      supports_credentials=True,
-     origins=['http://localhost', 'http://localhost:80', 'http://127.0.0.1', 'http://127.0.0.1:80'])  # React에서의 API 요청을 허용, 세션 지원
+     origins=['http://localhost', 'http://localhost:80', 'http://localhost:8080', 'http://127.0.0.1', 'http://127.0.0.1:80', 'http://127.0.0.1:8080'])  # React에서의 API 요청을 허용, 세션 지원
 
 # 세션 설정
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-in-production')
